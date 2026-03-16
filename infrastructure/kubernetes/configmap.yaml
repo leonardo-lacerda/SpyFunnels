@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: funnel-config
+  namespace: funnel-intelligence
+data:
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+  API_PORT: "3001"
+  WEB_PORT: "3000"
+  KAFKA_BROKERS: "kafka:9092"
+  KAFKA_CLIENT_ID: "funnel-intelligence"
+  KAFKA_GROUP_ID: "funnel-workers"
+  MAILPIT_API_URL: "http://mailpit:8025"
+  OPENAI_MODEL: "gpt-4.1-mini"
+

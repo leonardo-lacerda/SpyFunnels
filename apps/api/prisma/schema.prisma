@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  directUrl = env("DATABASE_URL")
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  plan      String   @default("pro") // trial, pro, enterprise
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users              User[]
+  competitorTargets  Competitor[]
+}
+
+model User {
+  id             String       @id @default(uuid())
+  organizationId String
+  email          String       @unique
+  name           String?
+  role           String       @default("member") // owner, admin, member
+  createdAt      DateTime     @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model Competitor {
+  id             String       @id @default(uuid())
+  organizationId String
+  displayName    String
+  primaryDomain  String
+  status         String       @default("active") // active, syncing, paused
+  lastSync       DateTime?
+  createdAt      DateTime     @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  monitoringRule MonitoringPolicy?
+}
+
+model MonitoringPolicy {
+  id             String     @id @default(uuid())
+  competitorId   String     @unique
+  cadence        String     @default("daily") // hourly, daily, weekly
+  priority       String     @default("normal") // normal, high
+  depth          String     @default("standard") // shallow, standard, deep
+  createdAt      DateTime   @default(now())
+
+  competitor     Competitor @relation(fields: [competitorId], references: [id], onDelete: Cascade)
+}

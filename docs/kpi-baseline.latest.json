@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-03-16T00:43:50.589Z",
+  "baseline": {
+    "totalCompetitors": 6,
+    "activeCompetitors": 6,
+    "competitorsWithGraph": 4,
+    "graphCoveragePercent": 66.67,
+    "totalEdges": 4,
+    "observedEdges": 4,
+    "observedEdgeRatioPercent": 100,
+    "processingLookbackDays": 7,
+    "processingSampleSize": 4,
+    "avgProcessingMinutes": 0.0001,
+    "p95ProcessingMinutes": 0.0001,
+    "totalCriticalAlerts": 0,
+    "mutedCriticalAlerts": 0,
+    "mutedCriticalAlertRatioPercent": 0
+  },
+  "qualityKpis": {
+    "priceOfferPrecisionPercent": null,
+    "upsellDownsellRecallPercent": null,
+    "criticalAlertFalsePositivePercent": null
+  },
+  "notes": [
+    "Metricas de precision/recall exigem conjunto de validacao com ground truth.",
+    "criticalAlertFalsePositivePercent depende de rotulagem humana dos alertas."
+  ]
+}

@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: var(--canvas);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-border-subtle: var(--border-subtle);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-brand-500: var(--brand-500);
+  --color-brand-700: var(--brand-700);
+  --color-ink-strong: var(--ink-strong);
+}
+
+:root {
+  --canvas: #f7f3ea;
+  --surface-1: #fffdfa;
+  --surface-2: #f1ece1;
+  --border-subtle: #ddd4c4;
+  --text-primary: #172033;
+  --text-secondary: #526074;
+  --text-muted: #7b8595;
+  --brand-500: #1d4ed8;
+  --brand-700: #1e3a8a;
+  --ink-strong: #111b2d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--canvas);
+  color: var(--text-primary);
+  font-family: "Aptos", "Segoe UI Variable Text", "Trebuchet MS", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(29, 78, 216, 0.16);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.dashboard-card {
+  @apply rounded-[28px] border border-white/70 bg-white/92 shadow-[0_20px_50px_rgba(15,23,42,0.08)];
+}
+
+.mono {
+  font-family: "IBM Plex Mono", "Consolas", monospace;
+}
+
+.react-flow__attribution {
+  display: none;
+}
+
+.react-flow__edge-textbg {
+  fill: rgba(255, 255, 255, 0.92);
+}
+
+.react-flow__controls-button {
+  background: transparent;
+  border: 0;
+  color: var(--text-primary);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(123, 133, 149, 0.35);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

@@ -1,0 +1,176 @@
+version: "3.9"
+
+x-common-env: &common-env
+  NODE_ENV: development
+  LOG_LEVEL: info
+  DATABASE_URL: postgres://postgres:postgres@postgres:5432/funnel_intelligence
+  JWT_SECRET: super-secure-development-secret-key-please-change
+  KAFKA_BROKERS: redpanda:9092
+  KAFKA_CLIENT_ID: funnel-intelligence
+  KAFKA_GROUP_ID: funnel-workers
+  MAILPIT_API_URL: http://mailpit:8025
+  OPENAI_MODEL: gpt-4.1-mini
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: funnel_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: funnel_intelligence
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
+
+  redpanda:
+    image: redpandadata/redpanda:v24.2.15
+    container_name: funnel_redpanda
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp=1
+      - --memory=1G
+      - --reserve-memory=0M
+      - --kafka-addr=PLAINTEXT://0.0.0.0:9092,OUTSIDE://0.0.0.0:19092
+      - --advertise-kafka-addr=PLAINTEXT://redpanda:9092,OUTSIDE://localhost:19092
+      - --check=false
+    ports:
+      - "19092:19092"
+      - "9644:9644"
+
+  mailpit:
+    image: axllent/mailpit:v1.24
+    container_name: funnel_mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+  migrate:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/api"
+    environment:
+      <<: *common-env
+    command: ["npm", "run", "db:migrate"]
+    depends_on:
+      - postgres
+
+  seed:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/api"
+    environment:
+      <<: *common-env
+    command: ["npm", "run", "db:seed"]
+    depends_on:
+      - migrate
+
+  api:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/api"
+    environment:
+      <<: *common-env
+      API_PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - seed
+      - redpanda
+
+  web:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/web"
+    environment:
+      <<: *common-env
+      VITE_API_URL: http://localhost:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+  crawler:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/crawler"
+    environment: *common-env
+    depends_on:
+      - api
+
+  browser-automation:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/browser-automation"
+    environment: *common-env
+    depends_on:
+      - api
+
+  stack-detection:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/stack-detection"
+    environment: *common-env
+    depends_on:
+      - api
+
+  email-intelligence:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/email-intelligence"
+    environment: *common-env
+    depends_on:
+      - api
+
+  ad-intelligence:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/ad-intelligence"
+    environment: *common-env
+    depends_on:
+      - api
+
+  funnel-analysis:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/funnel-analysis"
+    environment: *common-env
+    depends_on:
+      - api
+
+  monitoring-engine:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/monorepo.Dockerfile
+      args:
+        WORKSPACE: "@funnel/monitoring-engine"
+    environment: *common-env
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:

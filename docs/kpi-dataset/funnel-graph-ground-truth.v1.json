@@ -1,0 +1,175 @@
+{
+  "datasetVersion": "v1.0.0",
+  "updatedAt": "2026-03-16",
+  "cases": [
+    {
+      "id": "pt-br-checkout-price",
+      "url": "https://acme.com/checkout",
+      "title": "Checkout Seguro",
+      "html": "<html><body><h1>Finalize sua compra</h1><p>Pague em 12x de R$ 49,90 no cartao.</p><button>Finalizar compra</button></body></html>",
+      "expected": {
+        "nodeType": "checkout",
+        "priceValue": 49.9,
+        "currency": "BRL",
+        "installmentCount": 12,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "en-us-product-usd",
+      "url": "https://brand.com/offer",
+      "title": "Main Offer",
+      "html": "<html><body><h1>Growth Program</h1><p>Only $ 97.00 today.</p><a>Buy now</a></body></html>",
+      "expected": {
+        "nodeType": "product",
+        "priceValue": 97,
+        "currency": "USD",
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "es-downsell",
+      "url": "https://marca.com/oferta-final",
+      "title": "Oferta especial",
+      "html": "<html><body><h1>Ultima oportunidad</h1><p>Downsell con descuento final por EUR 39,00.</p><button>Comprar</button></body></html>",
+      "expected": {
+        "nodeType": "upsell",
+        "priceValue": 39,
+        "currency": "EUR",
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": true
+      }
+    },
+    {
+      "id": "upsell-one-click",
+      "url": "https://example.com/upsell",
+      "title": "One click upgrade",
+      "html": "<html><body><h1>Upgrade now</h1><p>One click upsell por GBP 29.00.</p></body></html>",
+      "expected": {
+        "nodeType": "upsell",
+        "priceValue": 29,
+        "currency": "GBP",
+        "installmentCount": null,
+        "hasUpsell": true,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "lead-magnet",
+      "url": "https://content.com/free-guide",
+      "title": "Free guide",
+      "html": "<html><body><h1>Download free guide</h1><p>Lead magnet para novos inscritos.</p><a>Download</a></body></html>",
+      "expected": {
+        "nodeType": "lead_magnet",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "webinar",
+      "url": "https://academy.com/webinar",
+      "title": "Masterclass ao vivo",
+      "html": "<html><body><h1>Webinar de conversao</h1><p>Inscreva-se na masterclass.</p><button>Registrar</button></body></html>",
+      "expected": {
+        "nodeType": "webinar",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "ad-entry",
+      "url": "https://site.com/?utm_source=facebook&utm_campaign=test",
+      "title": "Anuncio",
+      "html": "<html><body><h1>Landing de campanha</h1></body></html>",
+      "expected": {
+        "nodeType": "ad_entry",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "thank-you",
+      "url": "https://shop.com/thank-you",
+      "title": "Order confirmed",
+      "html": "<html><body><h1>Thank you for your order</h1><p>Success page.</p></body></html>",
+      "expected": {
+        "nodeType": "thank_you",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "ocr-price-fallback",
+      "url": "https://img.com/offer",
+      "title": "Oferta em imagem",
+      "html": "<html><body><h1>Oferta visual</h1><img src=\"/hero-offer.png\" /></body></html>",
+      "ocrText": "Apenas hoje R$ 297,00 com order bump exclusivo.",
+      "expected": {
+        "nodeType": "upsell",
+        "priceValue": 297,
+        "currency": "BRL",
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "checkout-english",
+      "url": "https://buy.com/cart",
+      "title": "Secure payment",
+      "html": "<html><body><h1>Payment step</h1><p>Checkout and payment details.</p><button>Pay now</button></body></html>",
+      "expected": {
+        "nodeType": "checkout",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "retention-membership",
+      "url": "https://community.com/membership",
+      "title": "Members area",
+      "html": "<html><body><h1>Join our membership</h1><p>Subscribe to access community.</p></body></html>",
+      "expected": {
+        "nodeType": "retention",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    },
+    {
+      "id": "landing-unknown",
+      "url": "https://brand.com/start",
+      "title": "Welcome",
+      "html": "<html><body><h1>Welcome to the program</h1><p>Start here.</p></body></html>",
+      "expected": {
+        "nodeType": "unknown",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      }
+    }
+  ]
+}

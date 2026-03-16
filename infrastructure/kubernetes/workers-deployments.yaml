@@ -1,0 +1,215 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crawler-worker
+  namespace: funnel-intelligence
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: crawler-worker
+  template:
+    metadata:
+      labels:
+        app: crawler-worker
+    spec:
+      containers:
+        - name: crawler
+          image: your-registry/funnel-crawler:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: funnel-config
+            - secretRef:
+                name: funnel-secrets
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: browser-automation-worker
+  namespace: funnel-intelligence
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: browser-automation-worker
+  template:
+    metadata:
+      labels:
+        app: browser-automation-worker
+    spec:
+      containers:
+        - name: browser-automation
+          image: your-registry/funnel-browser-automation:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: funnel-config
+            - secretRef:
+                name: funnel-secrets
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stack-detection-worker
+  namespace: funnel-intelligence
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stack-detection-worker
+  template:
+    metadata:
+      labels:
+        app: stack-detection-worker
+    spec:
+      containers:
+        - name: stack-detection
+          image: your-registry/funnel-stack-detection:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: funnel-config
+            - secretRef:
+                name: funnel-secrets
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-intelligence-worker
+  namespace: funnel-intelligence
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: email-intelligence-worker
+  template:
+    metadata:
+      labels:
+        app: email-intelligence-worker
+    spec:
+      containers:
+        - name: email-intelligence
+          image: your-registry/funnel-email-intelligence:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: funnel-config
+            - secretRef:
+                name: funnel-secrets
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ad-intelligence-worker
+  namespace: funnel-intelligence
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ad-intelligence-worker
+  template:
+    metadata:
+      labels:
+        app: ad-intelligence-worker
+    spec:
+      containers:
+        - name: ad-intelligence
+          image: your-registry/funnel-ad-intelligence:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: funnel-config
+            - secretRef:
+                name: funnel-secrets
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: funnel-analysis-worker
+  namespace: funnel-intelligence
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: funnel-analysis-worker
+  template:
+    metadata:
+      labels:
+        app: funnel-analysis-worker
+    spec:
+      containers:
+        - name: funnel-analysis
+          image: your-registry/funnel-funnel-analysis:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: funnel-config
+            - secretRef:
+                name: funnel-secrets
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-engine-worker
+  namespace: funnel-intelligence
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: monitoring-engine-worker
+  template:
+    metadata:
+      labels:
+        app: monitoring-engine-worker
+    spec:
+      containers:
+        - name: monitoring-engine
+          image: your-registry/funnel-monitoring-engine:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: funnel-config
+            - secretRef:
+                name: funnel-secrets
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: crawler-worker-hpa
+  namespace: funnel-intelligence
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: crawler-worker
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 65
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: browser-automation-worker-hpa
+  namespace: funnel-intelligence
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: browser-automation-worker
+  minReplicas: 2
+  maxReplicas: 30
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+

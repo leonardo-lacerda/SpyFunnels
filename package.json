@@ -1,0 +1,27 @@
+{
+  "name": "funnel-intelligence-saas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Competitive Funnel Intelligence SaaS monorepo",
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "dev": "npm run dev --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "db:migrate": "node scripts/run-migrations.mjs",
+    "db:seed": "node scripts/seed-data.mjs",
+    "kafka:topics": "node scripts/create-topics.mjs",
+    "kpi:baseline": "node scripts/compute-funnel-graph-kpis.mjs",
+    "kpi:harness": "node --import=tsx scripts/run-funnel-graph-kpi-harness.ts",
+    "test:e2e:pipeline": "node --import=tsx scripts/pipeline-e2e-smoke.ts"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

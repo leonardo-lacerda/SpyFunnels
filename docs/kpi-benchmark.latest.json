@@ -1,0 +1,325 @@
+{
+  "generatedAt": "2026-03-16T00:43:44.085Z",
+  "datasetVersion": "v1.0.0",
+  "datasetUpdatedAt": "2026-03-16",
+  "totalCases": 12,
+  "metrics": {
+    "nodeTypeAccuracyPercent": 75,
+    "priceOfferPrecisionPercent": 100,
+    "priceOfferRecallPercent": 80,
+    "upsellDownsellRecallPercent": 100,
+    "observedEdgeCoveragePercent": 100,
+    "avgProcessingMinutes": 0.0001,
+    "p95ProcessingMinutes": 0.0001,
+    "criticalAlertFalsePositivePercentProxy": 0
+  },
+  "processing": {
+    "lookbackDays": 7,
+    "sampleSize": 4,
+    "minSamples": 3
+  },
+  "thresholds": {
+    "priceOfferPrecisionPercent": 90,
+    "upsellDownsellRecallPercent": 80,
+    "observedEdgeCoveragePercent": 85,
+    "avgProcessingMinutes": 10,
+    "criticalAlertFalsePositivePercent": 10
+  },
+  "checks": {
+    "pricePrecision": true,
+    "upsellRecall": true,
+    "observedEdgeCoverage": true,
+    "processingTime": true,
+    "falsePositiveRate": true
+  },
+  "caseDetails": [
+    {
+      "id": "pt-br-checkout-price",
+      "expected": {
+        "nodeType": "checkout",
+        "priceValue": 49.9,
+        "currency": "BRL",
+        "installmentCount": 12,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "checkout",
+        "priceValue": 49.9,
+        "currency": "BRL",
+        "installmentCount": 12,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": true,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "en-us-product-usd",
+      "expected": {
+        "nodeType": "product",
+        "priceValue": 97,
+        "currency": "USD",
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "checkout",
+        "priceValue": 97,
+        "currency": "USD",
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": false,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "es-downsell",
+      "expected": {
+        "nodeType": "upsell",
+        "priceValue": 39,
+        "currency": "EUR",
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": true
+      },
+      "predicted": {
+        "nodeType": "upsell",
+        "priceValue": 39,
+        "currency": "EUR",
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": true
+      },
+      "checks": {
+        "nodeTypeMatch": true,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "upsell-one-click",
+      "expected": {
+        "nodeType": "upsell",
+        "priceValue": 29,
+        "currency": "GBP",
+        "installmentCount": null,
+        "hasUpsell": true,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "upsell",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": true,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": true,
+        "priceAndCurrencyMatch": false,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "lead-magnet",
+      "expected": {
+        "nodeType": "lead_magnet",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "ad_entry",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": false,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "webinar",
+      "expected": {
+        "nodeType": "webinar",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "ad_entry",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": false,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "ad-entry",
+      "expected": {
+        "nodeType": "ad_entry",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "ad_entry",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": true,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "thank-you",
+      "expected": {
+        "nodeType": "thank_you",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "thank_you",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": true,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "ocr-price-fallback",
+      "expected": {
+        "nodeType": "upsell",
+        "priceValue": 297,
+        "currency": "BRL",
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "upsell",
+        "priceValue": 297,
+        "currency": "BRL",
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": true,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "checkout-english",
+      "expected": {
+        "nodeType": "checkout",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "checkout",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": true,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "retention-membership",
+      "expected": {
+        "nodeType": "retention",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "retention",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": true,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    },
+    {
+      "id": "landing-unknown",
+      "expected": {
+        "nodeType": "unknown",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "predicted": {
+        "nodeType": "unknown",
+        "priceValue": null,
+        "currency": null,
+        "installmentCount": null,
+        "hasUpsell": false,
+        "hasDownsell": false
+      },
+      "checks": {
+        "nodeTypeMatch": true,
+        "priceAndCurrencyMatch": true,
+        "upsellSignalMatch": true
+      }
+    }
+  ]
+}

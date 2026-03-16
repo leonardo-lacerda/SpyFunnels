@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: funnel-web
+  namespace: funnel-intelligence
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: funnel-web
+  template:
+    metadata:
+      labels:
+        app: funnel-web
+    spec:
+      containers:
+        - name: web
+          image: your-registry/funnel-web:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: VITE_API_URL
+              value: "https://api.your-domain.com"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: funnel-web
+  namespace: funnel-intelligence
+spec:
+  selector:
+    app: funnel-web
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+

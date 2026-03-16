@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: funnel_intelligence
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d funnel_intelligence"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/funnel_intelligence
+      JWT_SECRET: ci-jwt-secret-with-at-least-32-characters
+      KAFKA_BROKERS: localhost:19092
+      KAFKA_CLIENT_ID: funnel-intelligence-ci
+      KAFKA_GROUP_ID: funnel-workers-ci
+      MAILPIT_API_URL: http://localhost:8025
+      OPENAI_MODEL: gpt-4.1-mini
+      VITE_API_URL: http://localhost:3001
+      API_PORT: 3001
+      WEB_PORT: 3000
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run database migrations
+        run: npm run db:migrate
+
+      - name: Run pipeline E2E smoke
+        env:
+          PIPELINE_E2E_ITERATIONS: 3
+        run: npm run test:e2e:pipeline
+
+      - name: Run KPI harness
+        run: npm run kpi:harness
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
